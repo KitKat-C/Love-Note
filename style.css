@@ -1,0 +1,234 @@
+:root {
+    --shadow-color: rgba(0, 0, 0, 0.2);
+    --envelope-tab: #f9c2c5;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background: #faf0f0;
+}
+
+.container {
+    position: relative;
+}
+
+.envelope-wrapper {
+    background:transparent;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.Envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: #f9c2c5;
+    margin: auto;
+    perspective: 1000px; 
+    z-index: 1;
+}
+
+/* CLOSED flap (base) 
+I want closed flap to be above the front so the tip of the triangle should be covered 
+by the heart */
+.Envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 100px solid transparent;
+    border-right:100px solid transparent;
+    border-top: 100px transparent;
+    z-index: 4;
+}
+
+/* OPEN flap (animated) */
+.Envelope::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 150px solid transparent;
+    border-right:150px solid transparent;
+    border-top: 120px solid #f4978e;
+    
+    transform-origin: top;
+    transform: rotateX(0deg);
+    transition: transform 0.6s ease;
+    z-index: 5;
+}
+.valentines:hover .Envelope::after {
+    transform: rotateX(180deg);
+}
+
+.front {
+    position: absolute;
+    top: 0;
+    left: 0; /* align with envelope left edge */
+    width: 300px; /* full envelope width */
+    height: 100px; /* flap height */
+    z-index: 3;
+}
+
+/* Right triangle */
+.front::after {
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: 150px; /* right half of envelope */
+    width: 0;
+    height: 0;
+    border-left: 0;
+    border-right: 170px solid #f4b5b8;
+    border-top:95px solid transparent;
+    border-bottom: 100px solid transparent;
+    z-index: 2;
+}
+
+/* Left triangle */
+.front::before {
+    content: "";
+    position: absolute;
+    top: 25px;
+    left: 20px; 
+    width: 0px;
+    height: 0;
+    border-right: 6px;
+    border-left: 300px solid #f4ced0;
+    border-top: 190px solid transparent;
+    border-bottom: 9px solid transparent;
+    z-index: 3;
+}
+
+/* Front 
+dont Change values here */
+/*.front {  
+    position: absolute;
+    width: 0;
+    height: 0;
+
+    border-right:199px solid #f4b5b8;
+    border-top:95px solid transparent;
+    border-bottom:100px solid transparent;
+
+    left: 120px;
+    top: 20px;
+    z-index:3;
+}
+.front::before {
+    content: "";
+    position: absolute;
+    border-left: 300px solid #f4ced0;
+    border-top: 199px solid transparent;
+    left: -99px;
+    top: -95px;
+}
+/* Card
+I want card to come up after evnvelope flap opens, and while flab is closed the card should be 
+hidden beind  */
+.card {
+    position: absolute;
+    z-index: 2;
+    width: 250px;
+    height: 180px;
+    left: 25px;
+    top: 10px;
+    background: #fff;
+    border-radius: 10px;
+    transition: transform 0.5s ease, z-index 0.5s ease;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 210px;
+    height: 140px;
+    border: 2px dotted #f9c5c8;
+    border-radius: 10px;
+}
+
+/* Hover animation */
+.valentines:hover .card {
+    transform: translateY(-100px);
+    z-index: 6; /* Ensure card is above the envelope when hovered */
+    transition: transform 0.5s ease;
+}
+
+/* Text */
+.card .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Arial', sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* Heart 
+heart should be above front*/
+.heart {
+    position: absolute;
+    z-index:6;
+    top: 50%;
+    left: 50%;
+    width: 15px;    
+    height: 15px;
+    background: red;
+    transform: translate(-50%, -20%) rotate(45deg);
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width:15px;
+    height: 15px;
+    background: red;
+    border-radius: 50%;
+}
+
+.heart::before {
+    top: -7px;
+    left: 0;
+}
+
+.heart::after {
+    left: -7px;
+    top: 0;
+}
+
+/* Floating animation */
+.valentines {
+    position: relative;
+    cursor: pointer;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Shadow */
+.valentines::before {
+    content: '';
+    position: absolute;
+    width: 330px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.2);
+    top: 260px;
+    left: -15px;
+    animation: scale 3s linear infinite;
+}
+
+/* Animations */
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes scale {
+    0%,100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.85); }
+}
